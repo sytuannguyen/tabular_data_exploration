@@ -60,7 +60,7 @@ def main():
         # Perform the selected action based on the dropdown choice
         if selected_option == "Display Info":
             #display_info(data)
-            st.code(data.info())
+            st.dataframe(data)
         elif selected_option == "Display Head":
             display_head(data)
         elif selected_option == "Display Basic Statistics":
