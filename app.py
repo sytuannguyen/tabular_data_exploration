@@ -33,15 +33,16 @@ def transform_categorical_data(data, categorical_cols, max_onehot_categories=10)
     transformed_data = data.copy()
     st.write('List of categorical columns:\n', categorical_cols)
     for col in categorical_cols:
-        if len(data[col]) <= max_onehot_categories:
+        '''if len(data[col]) <= max_onehot_categories:
             onehot_encoder = OneHotEncoder(sparse=False, drop='first')
             onehot_encoded = onehot_encoder.fit_transform(data[[col]])
             onehot_df = pd.DataFrame(onehot_encoded, columns=[f"{col}_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
             transformed_data = pd.concat([transformed_data, onehot_df], axis=1)
             transformed_data.drop(columns=[col], inplace=True)
-        else:
-            ordinal_encoder = OrdinalEncoder()
-            transformed_data[col] = ordinal_encoder.fit_transform(data[col])
+        else:'''
+        st.write(col)
+        ordinal_encoder = OrdinalEncoder()
+        transformed_data[col] = ordinal_encoder.fit_transform(data[col])
     
     return transformed_data
     
