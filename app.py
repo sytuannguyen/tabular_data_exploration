@@ -11,9 +11,7 @@ def load_data(file):
 # Function to display the dataset
 def display_dataframe(data):
     st.write("### Show the data")
-    # Highlight missing values in the dataframe
-    missing_values = data.isnull().style.highlight_null(null_color='yellow')
-    st.dataframe(missing_values)
+    st.dataframe(data)
     
     # Display shape of the dataframe and number of missing values in each column
     st.write(f"#### Dataframe Shape: {data.shape}")
