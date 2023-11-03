@@ -32,8 +32,9 @@ def fill_missing_values(data, fill_strategy):
 def transform_categorical_data(data, categorical_cols, max_onehot_categories=10):
     transformed_data = data.copy()
     st.write('List of categorical columns:\n', categorical_cols)
-    for i, col in enumerate(categorical_cols):
-        if data[col].nunique() <= max_onehot_categories:
+    for col in categorical_cols:
+        st.write(col)
+        '''if data[col].nunique() <= max_onehot_categories:
             onehot_encoder = OneHotEncoder(sparse=False, drop='first')
             onehot_encoded = onehot_encoder.fit_transform(data[[col]])
             onehot_df = pd.DataFrame(onehot_encoded, columns=[f"{col}_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
@@ -41,7 +42,7 @@ def transform_categorical_data(data, categorical_cols, max_onehot_categories=10)
             transformed_data.drop(columns=[col], inplace=True)
         else:
             ordinal_encoder = OrdinalEncoder()
-            transformed_data[col] = ordinal_encoder.fit_transform(data[col])
+            transformed_data[col] = ordinal_encoder.fit_transform(data[col])'''
     
     return transformed_data
     
@@ -140,7 +141,7 @@ def main():
 
     # Columns selection for encoding
     categorical_cols = data.select_dtypes(include=['object']).columns
-    st.write(categorical_cols)
+    
     # Dropdown for selecting transform categorical data strategy
     cat_transform_strategy = st.selectbox("Transform categorical data strategy:", ["None", "Encoding"])
     
