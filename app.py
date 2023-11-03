@@ -8,7 +8,20 @@ def load_data(file):
     data = pd.read_csv(file)
     return data
 
-# Function to display the dataset
+# Function to fill missing values based on user-selected strategy
+def fill_missing_values(data, fill_strategy):
+    if fill_strategy == "Constant":
+        constant_value = st.number_input("Enter constant value to fill missing values", value=0)
+        data_filled = data.fillna(constant_value)
+    elif fill_strategy == "Mean":
+        data_filled = data.fillna(data.mean())
+    elif fill_strategy == "Most Frequent":
+        data_filled = data.fillna(data.mode().iloc[0])
+    else:
+        data_filled = data
+    return data_filled
+
+# Function to display the dataset with missing values filled
 def display_dataframe(data):
     st.write("### Show the data")
     st.dataframe(data)
@@ -90,6 +103,13 @@ def main():
     options = ["Display Data", "Display Basic Statistics", 
                "Display Correlation Heatmap", "Display Histogram", "Display Cross Plot"]
     selected_option = st.selectbox("Select an option:", options)
+    
+    # Dropdown for selecting missing value filling strategy
+    fill_strategy = st.selectbox("Select missing value filling strategy:", ["None", "Constant", "Mean", "Most Frequent"])
+    
+    # Fill missing values based on user-selected strategy
+    if fill_strategy != "None":
+        data = fill_missing_values(data, fill_strategy)
 
     # Perform the selected action based on the dropdown choice
     if selected_option == "Display Data":
