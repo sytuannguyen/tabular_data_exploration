@@ -136,7 +136,7 @@ def main():
         data = fill_missing_values(data, fill_strategy)
 
     # Select max number of categories for using one-hot encoding
-    max_categories = st.number_input("Max Categories for One-Hot Encoding", min_value=2, max_value=100, value=10, step=1)
+    max_onehot_categories = st.number_input("Max Categories for One-Hot Encoding", min_value=2, max_value=100, value=10, step=1)
 
     # Columns selection for encoding
     categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
