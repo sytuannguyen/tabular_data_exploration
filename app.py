@@ -40,8 +40,8 @@ def transform_categorical_data(data, categorical_cols, max_onehot_categories=10)
             transformed_data = pd.concat([transformed_data, onehot_df], axis=1)
             transformed_data.drop(columns=[col], inplace=True)
         else:'''
-            ordinal_encoder = OrdinalEncoder()
-            transformed_data[col] = ordinal_encoder.fit_transform(data[col])
+        ordinal_encoder = OrdinalEncoder()
+        transformed_data[col] = ordinal_encoder.fit_transform(data[col])
     
     return transformed_data
     
