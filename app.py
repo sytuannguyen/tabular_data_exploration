@@ -141,7 +141,7 @@ def main():
     max_onehot_categories = st.number_input("Max Categories for One-Hot Encoding", min_value=2, max_value=100, value=10, step=1)
 
     # Columns selection for encoding
-    categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
+    categorical_cols = list(data.select_dtypes(include=['object']).columns)
 
     # Dropdown for selecting transform categorical data strategy
     cat_transform_strategy = st.selectbox("Transform categorical data strategy:", ["None", "Encoding"])
