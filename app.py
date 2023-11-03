@@ -33,16 +33,20 @@ def display_correlation_heatmap(data):
     selected_data = numerical_cols[selected_columns]
     corr_matrix = selected_data.corr()
     
+    # Color customization
+    heatmap_color = st.color_picker("Select heatmap color", value='#3498db')
+    
     plt.figure(figsize=(figure_size, figure_size))
-    sns.heatmap(corr_matrix, annot=show_annotation, cmap='coolwarm', fmt=".2f", linewidths=.5)
+    sns.heatmap(corr_matrix, annot=show_annotation, cmap=heatmap_color, fmt=".2f", linewidths=.5)
     st.pyplot(plt)
 
 # Function to display histogram of selected column
 def display_histogram(data):
     st.write("### Histogram of Selected Column")
     column_name = st.selectbox("Select a column:", data.columns)
+    histogram_color = st.color_picker("Select histogram color", value='#3498db')
     plt.figure(figsize=(8, 6))
-    plt.hist(data[column_name], bins=30, color='skyblue', edgecolor='black')
+    plt.hist(data[column_name], bins=30, color=histogram_color, edgecolor='black')
     plt.xlabel(column_name)
     plt.ylabel("Frequency")
     plt.title(f"Histogram of {column_name}")
@@ -53,8 +57,9 @@ def display_cross_plot(data):
     st.write("### Cross Plot")
     x_column = st.selectbox("Select X-axis column:", data.columns)
     y_column = st.selectbox("Select Y-axis column:", data.columns)
+    scatterplot_color = st.color_picker("Select scatter plot color", value='#3498db')
     plt.figure(figsize=(8, 6))
-    plt.scatter(data[x_column], data[y_column], color='skyblue')
+    plt.scatter(data[x_column], data[y_column], color=scatterplot_color)
     plt.xlabel(x_column)
     plt.ylabel(y_column)
     plt.title(f"Cross Plot between {x_column} and {y_column}")
