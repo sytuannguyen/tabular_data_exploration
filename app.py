@@ -14,11 +14,14 @@ def fill_missing_values(data, fill_strategy):
         constant_value = st.number_input("Enter constant value to fill missing values", value=0)
         data_filled = data.fillna(constant_value)
     elif fill_strategy == "Mean":
-        data_filled = data.fillna(data.mean())
+        numerical_cols = data.select_dtypes(include=['float64', 'int64'])
+        filled_numerical_cols = numerical_cols.fillna(numerical_cols.mean())
+        data_filled = data.copy()
+        data_filled[numerical_cols.columns] = filled_numerical_cols
     elif fill_strategy == "Most Frequent":
         data_filled = data.fillna(data.mode().iloc[0])
     else:
-        data_filled = data
+        data_filled = data.copy()
     return data_filled
 
 # Function to display the dataset with missing values filled
