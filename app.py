@@ -10,12 +10,7 @@ def load_data(file):
     return data
 
 # Function to fill missing values based on user-selected strategy
-def fill_missing_values(data, fill_strategy):
-    # Display shape of the dataframe and number of missing values in each column
-    st.write(f"#### Dataframe Shape: {data.shape}")
-    st.write("#### Number of Missing Values:")
-    st.write(data.isnull().sum().sort_values(ascending=False))
-    
+def fill_missing_values(data, fill_strategy):    
     if fill_strategy == "Constant":
         constant_value = st.number_input("Enter constant value to fill missing values", value=0)
         numerical_cols = data.select_dtypes(include=['float64', 'int64'])
@@ -146,6 +141,11 @@ def main():
     elif selected_option == "Display Cross Plot":
         display_cross_plot(data)
 
+    # Display shape of the dataframe and number of missing values in each column
+    st.write(f"#### Dataframe Shape: {data.shape}")
+    st.write("#### Number of Missing Values:")
+    st.write(data.isnull().sum().sort_values(ascending=False))
+    
     # Dropdown for selecting missing value filling strategy
     fill_strategy = st.selectbox("Select missing value filling strategy:", ["None", "Constant", "Mean", "Most Frequent"])
     
