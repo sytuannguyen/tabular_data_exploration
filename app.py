@@ -29,22 +29,19 @@ def fill_missing_values(data, fill_strategy):
     return data_filled
 
 # Function to transform categorical columns to numerical using ordinal encoding or one-hot encoding
-def transform_categorical_data(data, ordinal_cols, onehot_cols, use_ordinal=True, max_categories=10):
+def transform_categorical_data(data, categorical_cols, max_onehot_categories=10):
     transformed_data = data.copy()
-    
-    if use_ordinal:
-        ordinal_encoder = OrdinalEncoder()
-        transformed_data[ordinal_cols] = ordinal_encoder.fit_transform(data[ordinal_cols])
-    else:
-        for col in onehot_cols:
-            if len(data[col].unique()) <= max_categories:
-                onehot_encoder = OneHotEncoder(sparse=False, drop='first')
-                onehot_encoded = onehot_encoder.fit_transform(data[[col]])
-                onehot_df = pd.DataFrame(onehot_encoded, columns=[f"{col}_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
-                transformed_data = pd.concat([transformed_data, onehot_df], axis=1)
-                transformed_data.drop(columns=[col], inplace=True)
-            else:
-                st.warning(f"Column '{col}' has too many categories to use one-hot encoding. Keeping it unchanged.")
+
+    for col in categorical_cols:
+        if len(data[col].unique()) <= max_categories:
+            onehot_encoder = OneHotEncoder(sparse=False, drop='first')
+            onehot_encoded = onehot_encoder.fit_transform(data[[col]])
+            onehot_df = pd.DataFrame(onehot_encoded, columns=[f"{col}_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
+            transformed_data = pd.concat([transformed_data, onehot_df], axis=1)
+            transformed_data.drop(columns=[col], inplace=True)
+        else:
+            ordinal_encoder = OrdinalEncoder()
+            transformed_data[col] = ordinal_encoder.fit_transform(data[col])
     
     return transformed_data
     
@@ -144,11 +141,13 @@ def main():
 
     # Columns selection for encoding
     categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
-    selected_ordinal_cols = st.multiselect("Select columns for Ordinal Encoding:", categorical_cols)
-    selected_onehot_cols = st.multiselect("Select columns for One-Hot Encoding:", categorical_cols)
 
+    # Dropdown for selecting transform categorical data strategy
+    cat_transform_strategy = st.selectbox("Transform categorical data strategy:", ["None", "Encoding"])
+    
     # Transform categorical data to numerical data based on user-selected encoding method
-    transformed_data = transform_categorical_data(data, selected_ordinal_cols, selected_onehot_cols, use_ordinal_encoding, max_categories)
+    if cat_transform_strategy != "None":
+        data = transform_categorical_data(data, categorical_cols, max_onehot_categories)
 
     # Perform the selected action based on the dropdown choice
     if selected_option == "Display Data":
