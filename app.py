@@ -66,7 +66,11 @@ def display_dataframe(data):
     
     # Display number of unique values in each column
     st.write("#### Number of Unique Values in Each Column:")
-    st.write(data.nunique())
+    st.write(data.nunique().sort_values(ascending=False))
+
+    # Display data types
+    st.write("#### Number of Unique Values in Each Column:")
+    st.write(data.dtype())
 
 
 # Function to display basic statistics
