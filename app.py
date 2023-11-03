@@ -113,8 +113,8 @@ def main():
     fill_strategy = st.selectbox("Select missing value filling strategy:", ["None", "Constant", "Mean", "Most Frequent"])
     
     # Fill missing values based on user-selected strategy
-    if fill_strategy != "None":
-        data = fill_missing_values(data, fill_strategy)
+    #if fill_strategy != "None":
+    #    data = fill_missing_values(data, fill_strategy)
 
     # Perform the selected action based on the dropdown choice
     if selected_option == "Display Data":
