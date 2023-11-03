@@ -174,7 +174,10 @@ def main():
 
     # Checkbox for saving transformed data
     if st.checkbox("Save Transformed Data"):
-        data.to_csv("transformed_data.csv", index=False)
+        # Generate a download link for the transformed data
+        csv = data.to_csv(index=False)
+        st.download_button(label="Download Transformed Data", data=csv, file_name="transformed_data.csv", mime="text/csv")
+
 
 # Run the app
 if __name__ == "__main__":
