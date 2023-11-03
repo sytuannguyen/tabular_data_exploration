@@ -11,6 +11,11 @@ def load_data(file):
 
 # Function to fill missing values based on user-selected strategy
 def fill_missing_values(data, fill_strategy):
+    # Display shape of the dataframe and number of missing values in each column
+    st.write(f"#### Dataframe Shape: {data.shape}")
+    st.write("#### Number of Missing Values:")
+    st.write(data.isnull().sum().sort_values(ascending=False))
+    
     if fill_strategy == "Constant":
         constant_value = st.number_input("Enter constant value to fill missing values", value=0)
         numerical_cols = data.select_dtypes(include=['float64', 'int64'])
@@ -30,8 +35,11 @@ def fill_missing_values(data, fill_strategy):
 
 # Function to transform categorical columns to numerical using ordinal encoding or one-hot encoding
 def transform_categorical_data(data, categorical_cols, max_onehot_categories=10):
+    # Display number of unique values in each column
+    st.write("#### Number of Unique Values in Each Categorical Column:")
+    st.write(data[categorical_cols].nunique().sort_values(ascending=False))
+
     transformed_data = data.copy()
-    
     ordinal_cols = []
     one_hot_cols = []
     for col in categorical_cols:
@@ -56,15 +64,6 @@ def transform_categorical_data(data, categorical_cols, max_onehot_categories=10)
 def display_dataframe(data):
     st.write("### Show the data")
     st.dataframe(data)
-    
-    # Display shape of the dataframe and number of missing values in each column
-    st.write(f"#### Dataframe Shape: {data.shape}")
-    st.write("#### Number of Missing Values:")
-    st.write(data.isnull().sum().sort_values(ascending=False))
-    
-    # Display number of unique values in each column
-    st.write("#### Data Types and Number of Unique Values in Each Column:")
-    st.write(data.nunique().sort_values(ascending=False))
 
 # Function to display basic statistics
 def display_statistics(data):
@@ -158,16 +157,15 @@ def main():
     if fill_strategy != "None":
         data = fill_missing_values(data, fill_strategy)
 
-    # Select max number of categories for using one-hot encoding
-    max_onehot_categories = st.number_input("Max Categories for One-Hot Encoding", min_value=2, max_value=100, value=10, step=1)
-
     # Columns selection for encoding
     categorical_cols = data.select_dtypes(include=['object']).columns.astype(str)
-    st.write('List of categorical columns:\n', categorical_cols)
     
     # Dropdown for selecting transform categorical data strategy
     cat_transform_strategy = st.selectbox("Transform categorical data strategy:", ["None", "Encoding"])
-    
+
+    # Select max number of categories for using one-hot encoding
+    max_onehot_categories = st.number_input("Max Categories for One-Hot Encoding", min_value=2, max_value=100, value=10, step=1)
+
     # Transform categorical data to numerical data based on user-selected encoding method
     if cat_transform_strategy != "None":
         data = transform_categorical_data(data, categorical_cols, max_onehot_categories)
