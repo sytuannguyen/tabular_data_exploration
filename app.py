@@ -39,7 +39,7 @@ def display_dataframe(data):
         'Data Type': data.dtypes
     }).sort_values(by='Missing Values', ascending=False)
     st.write("#### Number of Missing Values and Data Types in Each Column:")
-    st.write(missing_info)
+    st.dataframe(missing_info)
 
 # Function to display basic statistics
 def display_statistics(data):
