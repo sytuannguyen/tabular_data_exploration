@@ -32,7 +32,7 @@ def fill_missing_values(data, fill_strategy):
 def transform_categorical_data(data, categorical_cols, max_onehot_categories=10):
     transformed_data = data.copy()
 
-    '''for col in categorical_cols:
+    for col in categorical_cols:
         if len(data[col].unique()) <= max_categories:
             onehot_encoder = OneHotEncoder(sparse=False, drop='first')
             onehot_encoded = onehot_encoder.fit_transform(data[[col]])
@@ -41,7 +41,7 @@ def transform_categorical_data(data, categorical_cols, max_onehot_categories=10)
             transformed_data.drop(columns=[col], inplace=True)
         else:
             ordinal_encoder = OrdinalEncoder()
-            transformed_data[col] = ordinal_encoder.fit_transform(data[col])'''
+            transformed_data[col] = ordinal_encoder.fit_transform(data[col])
     
     return transformed_data
     
