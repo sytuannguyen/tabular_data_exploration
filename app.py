@@ -42,12 +42,11 @@ def transform_categorical_data(data, categorical_cols, max_onehot_categories=10)
             ordinal_cols.append(col)
     
     if len(one_hot_cols)>0:
-        st.write(one_hot_cols)
         onehot_encoder = OneHotEncoder(sparse=False, drop='first')
         onehot_encoded = onehot_encoder.fit_transform(data[[one_hot_cols]])
-        '''onehot_df = pd.DataFrame(onehot_encoded, columns=[f"OH_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
+        onehot_df = pd.DataFrame(onehot_encoded, columns=[f"OH_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
         transformed_data = pd.concat([transformed_data, onehot_df], axis=1)
-        transformed_data.drop(columns=[one_hot_cols], inplace=True)'''
+        transformed_data.drop(columns=[one_hot_cols], inplace=True)
 
     ordinal_encoder = OrdinalEncoder()
     transformed_data[ordinal_cols] = ordinal_encoder.fit_transform(data[ordinal_cols])
@@ -64,14 +63,9 @@ def display_dataframe(data):
     st.write("#### Number of Missing Values:")
     st.write(data.isnull().sum().sort_values(ascending=False))
     
-    # Display number of unique values and data type in each column
+    # Display number of unique values in each column
     st.write("#### Data Types and Number of Unique Values in Each Column:")
-    unique_values = data.nunique()
-    data_types = data.dtypes
-    column_info = pd.DataFrame(data.info())
-    st.write(unique_values)
-    st.write(column_info)
-
+    st.write(data.nunique().sort_values(ascending=False))
 
 # Function to display basic statistics
 def display_statistics(data):
@@ -180,7 +174,7 @@ def main():
 
     # Checkbox for saving transformed data
     if st.checkbox("Save Transformed Data"):
-        transformed_data.to_csv("transformed_data.csv", index=False)
+        data.to_csv("transformed_data.csv", index=False)
 
 # Run the app
 if __name__ == "__main__":
