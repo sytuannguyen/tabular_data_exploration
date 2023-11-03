@@ -24,33 +24,16 @@ def display_correlation_heatmap(data):
     # Options for the correlation heatmap
     show_annotation = st.checkbox("Show Annotation", value=True)
     figure_size = st.slider("Figure Size", min_value=5, max_value=20, value=10, step=1)
-    numerical_cols = data.select_dtypes(include=['float64', 'int64'])
-    corr_matrix = numerical_cols.corr()
+    
+    # Multiselect for selecting columns for the heatmap
+    selected_columns = st.multiselect("Select Columns for Correlation Heatmap", data.columns, default=data.columns)
+    
+    # Filter data based on selected columns
+    correlation_data = data[selected_columns]
+    
+    corr_matrix = correlation_data.corr()
     plt.figure(figsize=(figure_size, figure_size))
     sns.heatmap(corr_matrix, annot=show_annotation, cmap='coolwarm', fmt=".2f", linewidths=.5)
-    st.pyplot(plt)
-
-# Function to display histogram of selected column
-def display_histogram(data):
-    st.write("### Histogram of Selected Column")
-    column_name = st.selectbox("Select a column:", data.columns)
-    plt.figure(figsize=(8, 6))
-    plt.hist(data[column_name], bins=30, color='skyblue', edgecolor='black')
-    plt.xlabel(column_name)
-    plt.ylabel("Frequency")
-    plt.title(f"Histogram of {column_name}")
-    st.pyplot(plt)
-
-# Function to display cross plot between selected columns
-def display_cross_plot(data):
-    st.write("### Cross Plot")
-    x_column = st.selectbox("Select X-axis column:", data.columns)
-    y_column = st.selectbox("Select Y-axis column:", data.columns)
-    plt.figure(figsize=(8, 6))
-    plt.scatter(data[x_column], data[y_column], color='skyblue')
-    plt.xlabel(x_column)
-    plt.ylabel(y_column)
-    plt.title(f"Cross Plot between {x_column} and {y_column}")
     st.pyplot(plt)
 
 # Main function
@@ -67,7 +50,7 @@ def main():
     
     # Dropdown for data exploration options
     options = ["Display Data", "Display Basic Statistics", 
-               "Display Correlation Heatmap", "Display Histogram", "Display Cross Plot"]
+               "Display Correlation Heatmap"]
     selected_option = st.selectbox("Select an option:", options)
 
     # Perform the selected action based on the dropdown choice
@@ -77,10 +60,6 @@ def main():
         display_statistics(data)
     elif selected_option == "Display Correlation Heatmap":
         display_correlation_heatmap(data)
-    elif selected_option == "Display Histogram":
-        display_histogram(data)
-    elif selected_option == "Display Cross Plot":
-        display_cross_plot(data)
 
 # Run the app
 if __name__ == "__main__":
