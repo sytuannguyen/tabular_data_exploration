@@ -68,9 +68,9 @@ def display_dataframe(data):
     st.write("#### Data Types and Number of Unique Values in Each Column:")
     unique_values = data.nunique()
     data_types = data.dtypes
-    #column_info = pd.DataFrame({'Data Type': data_types, 'Number of Unique Values': unique_values})
+    column_info = pd.DataFrame(data.info())
     st.write(unique_values)
-    st.write(data_types)
+    st.write(column_info)
 
 
 # Function to display basic statistics
