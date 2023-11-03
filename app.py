@@ -37,7 +37,7 @@ def fill_missing_values(data, fill_strategy):
 def transform_categorical_data(data, categorical_cols, max_onehot_categories=10):
     # Display number of unique values in each column
     st.write("#### Number of Unique Values in Each Categorical Column:")
-    #st.write(data[categorical_cols].nunique().sort_values(ascending=False))
+    st.write(data[categorical_cols].nunique().sort_values(ascending=False))
 
     transformed_data = data.copy()
     ordinal_cols = []
