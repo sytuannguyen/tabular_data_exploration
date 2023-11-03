@@ -34,9 +34,12 @@ def display_dataframe(data):
     
     # Display shape of the dataframe and number of missing values in each column
     st.write(f"#### Dataframe Shape: {data.shape}")
-    missing_counts = data.isnull().sum().sort_values(ascending=False)
-    st.write("#### Number of Missing Values in Each Column:")
-    st.write(missing_counts)
+    missing_info = pd.DataFrame({
+        'Missing Values': data.isnull().sum(),
+        'Data Type': data.dtypes
+    }).sort_values(by='Missing Values', ascending=False)
+    st.write("#### Number of Missing Values and Data Types in Each Column:")
+    st.write(missing_info)
 
 # Function to display basic statistics
 def display_statistics(data):
