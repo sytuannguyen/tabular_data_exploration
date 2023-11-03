@@ -32,17 +32,23 @@ def fill_missing_values(data, fill_strategy):
 def transform_categorical_data(data, categorical_cols, max_onehot_categories=10):
     transformed_data = data.copy()
     st.write('List of categorical columns:\n', categorical_cols)
+
+    ordinal_cols = []
+    one_hot_cols = []
     for col in categorical_cols:
-        '''if len(data[col]) <= max_onehot_categories:
-            onehot_encoder = OneHotEncoder(sparse=False, drop='first')
-            onehot_encoded = onehot_encoder.fit_transform(data[[col]])
-            onehot_df = pd.DataFrame(onehot_encoded, columns=[f"{col}_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
-            transformed_data = pd.concat([transformed_data, onehot_df], axis=1)
-            transformed_data.drop(columns=[col], inplace=True)
-        else:'''
-        st.write(col)
-        ordinal_encoder = OrdinalEncoder()
-        transformed_data[col] = ordinal_encoder.fit_transform(data[col])
+        if len(data[col]) <= max_onehot_categories:
+            one_hot_cols.append(col)
+        else:
+            ordinal_cols.append(col)
+
+    onehot_encoder = OneHotEncoder(sparse=False, drop='first')
+    onehot_encoded = onehot_encoder.fit_transform(data[[one_hot_cols]])
+    onehot_df = pd.DataFrame(onehot_encoded, columns=[f"OH_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
+    transformed_data = pd.concat([transformed_data, onehot_df], axis=1)
+    transformed_data.drop(columns=[one_hot_cols], inplace=True)
+
+    ordinal_encoder = OrdinalEncoder()
+    transformed_data[ordinal_cols] = ordinal_encoder.fit_transform(data[ordinal_cols])
     
     return transformed_data
     
