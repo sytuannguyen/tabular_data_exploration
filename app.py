@@ -58,7 +58,7 @@ def display_correlation_heatmap(data):
     corr_matrix = selected_data.corr()
     
     # Color customization
-    heatmap_color = st.color_picker("Select heatmap color", value='#3498db')
+    heatmap_color = st.color_picker("Select heatmap color", value='Accent')
     
     plt.figure(figsize=(figure_size, figure_size))
     sns.heatmap(corr_matrix, annot=show_annotation, cmap=heatmap_color, fmt=".2f", linewidths=.5)
@@ -113,8 +113,8 @@ def main():
     fill_strategy = st.selectbox("Select missing value filling strategy:", ["None", "Constant", "Mean", "Most Frequent"])
     
     # Fill missing values based on user-selected strategy
-    #if fill_strategy != "None":
-    #    data = fill_missing_values(data, fill_strategy)
+    if fill_strategy != "None":
+        data = fill_missing_values(data, fill_strategy)
 
     # Perform the selected action based on the dropdown choice
     if selected_option == "Display Data":
