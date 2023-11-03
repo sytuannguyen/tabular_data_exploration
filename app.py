@@ -74,6 +74,8 @@ def display_cross_plot(data):
 # Main function
 def main():
     st.title("Explore Tabular Data")
+    # Subtitle showing author name and institution
+    st.markdown("**Author:** Dr. Tuan Nguyen-Sy\n**Institution:** Institute for Computational Science and Artificial Intelligence, Van Lang University")
 
     # File upload
     uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
