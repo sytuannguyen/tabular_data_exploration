@@ -34,7 +34,7 @@ def display_dataframe(data):
     
     # Display shape of the dataframe and number of missing values in each column
     st.write(f"#### Dataframe Shape: {data.shape}")
-    missing_counts = data.isnull().sum().sort_values()
+    missing_counts = data.isnull().sum().sort_values(ascending=False)
     st.write("#### Number of Missing Values in Each Column:")
     st.write(missing_counts)
 
