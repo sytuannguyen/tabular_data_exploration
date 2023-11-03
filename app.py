@@ -52,14 +52,16 @@ def main():
 
     if uploaded_file is not None:
         data = load_data(uploaded_file)
-
+        
         # Dropdown for data exploration options
         options = ["Display Info", "Display Head", "Display Basic Statistics", "Fill Missing Values", "Histogram Plot", "Heatmap Plot"]
         selected_option = st.selectbox("Select an option:", options)
 
         # Perform the selected action based on the dropdown choice
         if selected_option == "Display Info":
-            display_info(data)
+            #display_info(data)
+            st.write("### Dataset Info")
+            st.write(data.info())
         elif selected_option == "Display Head":
             display_head(data)
         elif selected_option == "Display Basic Statistics":
