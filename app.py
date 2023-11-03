@@ -64,13 +64,12 @@ def display_dataframe(data):
     st.write("#### Number of Missing Values:")
     st.write(data.isnull().sum().sort_values(ascending=False))
     
-    # Display number of unique values in each column
-    st.write("#### Number of Unique Values in Each Column:")
-    st.write(data.nunique().sort_values(ascending=False))
-
-    # Display data types
-    st.write("#### Number of Unique Values in Each Column:")
-    st.write(data.dtype())
+    # Display number of unique values and data type in each column
+    st.write("#### Data Types and Number of Unique Values in Each Column:")
+    unique_values = data.nunique()
+    data_types = data.dtypes
+    column_info = pd.DataFrame({'Data Type': data_types, 'Number of Unique Values': unique_values})
+    st.write(column_info)
 
 
 # Function to display basic statistics
