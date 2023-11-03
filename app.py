@@ -32,14 +32,17 @@ def display_dataframe(data):
     st.write("### Show the data")
     st.dataframe(data)
     
+    # Convert DataFrame cells to strings to avoid Arrow data type conversion issues
+    data_str = data.astype(str)
+    
     # Display shape of the dataframe and number of missing values in each column
     st.write(f"#### Dataframe Shape: {data.shape}")
     missing_info = pd.DataFrame({
-        'Missing Values': data.isnull().sum(),
-        'Data Type': data.dtypes
+        'Missing Values': data_str.isnull().sum(),
+        'Data Type': data_str.dtypes
     }).sort_values(by='Missing Values', ascending=False)
     st.write("#### Number of Missing Values and Data Types in Each Column:")
-    st.dataframe(missing_info)
+    st.write(missing_info)
 
 # Function to display basic statistics
 def display_statistics(data):
