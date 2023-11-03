@@ -23,13 +23,13 @@ def display_statistics(data):
     st.write("### Basic Statistics")
     st.write(data.describe())
 
-# Function to display correlation heatmap
-def display_correlation_heatmap(data):
+# Function to display correlation heatmap with user-defined options
+def display_correlation_heatmap(data, show_annotation, figure_size):
     st.write("### Correlation Heatmap")
     numerical_cols = data.select_dtypes(include=['float64', 'int64'])
     corr_matrix = numerical_cols.corr()
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", linewidths=.5)
+    plt.figure(figsize=figure_size)
+    sns.heatmap(corr_matrix, annot=show_annotation, cmap='coolwarm', fmt=".2f", linewidths=.5)
     st.pyplot(plt)
 
 # Main function
@@ -56,7 +56,10 @@ def main():
     elif selected_option == "Display Basic Statistics":
         display_statistics(data)
     elif selected_option == "Display Correlation Heatmap":
-        display_correlation_heatmap(data)
+        # Options for the correlation heatmap
+        show_annotation = st.checkbox("Show Annotation", value=True)
+        figure_size = st.slider("Figure Size", min_value=5, max_value=20, value=10, step=1)
+        display_correlation_heatmap(data, show_annotation, (figure_size, figure_size))
 
 # Run the app
 if __name__ == "__main__":
