@@ -34,14 +34,14 @@ def transform_categorical_data(data, categorical_cols, max_onehot_categories=10)
     st.write('List of categorical columns:\n', categorical_cols)
     for col in categorical_cols:
         if len(data[col].unique()) <= max_categories:
-            st.write(col, str(data[col].unique()))
+            st.write('One-hot: ',col)
             '''onehot_encoder = OneHotEncoder(sparse=False, drop='first')
             onehot_encoded = onehot_encoder.fit_transform(data[[col]])
             onehot_df = pd.DataFrame(onehot_encoded, columns=[f"{col}_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
             transformed_data = pd.concat([transformed_data, onehot_df], axis=1)
             transformed_data.drop(columns=[col], inplace=True)'''
         else:
-            st.write(col, str(data[col].unique()))
+            st.write('Ordinal: ', col)
             '''ordinal_encoder = OrdinalEncoder()
             transformed_data[col] = ordinal_encoder.fit_transform(data[col])'''
     
