@@ -28,8 +28,9 @@ def main():
     st.title("Explore Tabular Data")
 
     # File upload
-    uploaded_file = 'training.csv'#st.file_uploader("Upload CSV file", type=["csv"])
-
+    #uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
+    uploaded_file = st.sidebar.file_uploader("Upload CSV file", type=["csv"], key="default_key", default='training.csv')
+    
     if uploaded_file is not None:
         data = load_data(uploaded_file)
         
