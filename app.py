@@ -28,23 +28,24 @@ def main():
     st.title("Explore Tabular Data")
 
     # File upload
-    #uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
-    uploaded_file = st.sidebar.file_uploader("Upload CSV file", type=["csv"], key="default_key", default='training.csv')
+    uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
     
-    if uploaded_file is not None:
-        data = load_data(uploaded_file)
+    if uploaded_file is None:
+        uploaded_file = 'training.csv'
         
-        # Dropdown for data exploration options
-        options = ["Display Data", "Display Head", "Display Basic Statistics"]
-        selected_option = st.selectbox("Select an option:", options)
+    data = load_data(uploaded_file)
+    
+    # Dropdown for data exploration options
+    options = ["Display Data", "Display Head", "Display Basic Statistics"]
+    selected_option = st.selectbox("Select an option:", options)
 
-        # Perform the selected action based on the dropdown choice
-        if selected_option == "Display Data":
-            display_dataframe(data)
-        elif selected_option == "Display Head":
-            display_head(data)
-        elif selected_option == "Display Basic Statistics":
-            display_statistics(data)
+    # Perform the selected action based on the dropdown choice
+    if selected_option == "Display Data":
+        display_dataframe(data)
+    elif selected_option == "Display Head":
+        display_head(data)
+    elif selected_option == "Display Basic Statistics":
+        display_statistics(data)
 
 # Run the app
 if __name__ == "__main__":
