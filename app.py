@@ -31,8 +31,7 @@ def fill_missing_values(data, fill_strategy):
 # Function to transform categorical columns to numerical using ordinal encoding or one-hot encoding
 def transform_categorical_data(data, categorical_cols, max_onehot_categories=10):
     transformed_data = data.copy()
-    st.write('List of categorical columns:\n', categorical_cols)
-
+    
     ordinal_cols = []
     one_hot_cols = []
     for col in categorical_cols:
@@ -139,26 +138,6 @@ def main():
     options = ["Display Data", "Display Basic Statistics", 
                "Display Correlation Heatmap", "Display Histogram", "Display Cross Plot"]
     selected_option = st.selectbox("Select an option:", options)
-    
-    # Dropdown for selecting missing value filling strategy
-    fill_strategy = st.selectbox("Select missing value filling strategy:", ["None", "Constant", "Mean", "Most Frequent"])
-    
-    # Fill missing values based on user-selected strategy
-    if fill_strategy != "None":
-        data = fill_missing_values(data, fill_strategy)
-
-    # Select max number of categories for using one-hot encoding
-    max_onehot_categories = st.number_input("Max Categories for One-Hot Encoding", min_value=2, max_value=100, value=10, step=1)
-
-    # Columns selection for encoding
-    categorical_cols = data.select_dtypes(include=['object']).columns.astype(str)
-    
-    # Dropdown for selecting transform categorical data strategy
-    cat_transform_strategy = st.selectbox("Transform categorical data strategy:", ["None", "Encoding"])
-    
-    # Transform categorical data to numerical data based on user-selected encoding method
-    if cat_transform_strategy != "None":
-        data = transform_categorical_data(data, categorical_cols, max_onehot_categories)
 
     # Perform the selected action based on the dropdown choice
     if selected_option == "Display Data":
@@ -172,6 +151,27 @@ def main():
     elif selected_option == "Display Cross Plot":
         display_cross_plot(data)
 
+    # Dropdown for selecting missing value filling strategy
+    fill_strategy = st.selectbox("Select missing value filling strategy:", ["None", "Constant", "Mean", "Most Frequent"])
+    
+    # Fill missing values based on user-selected strategy
+    if fill_strategy != "None":
+        data = fill_missing_values(data, fill_strategy)
+
+    # Select max number of categories for using one-hot encoding
+    max_onehot_categories = st.number_input("Max Categories for One-Hot Encoding", min_value=2, max_value=100, value=10, step=1)
+
+    # Columns selection for encoding
+    categorical_cols = data.select_dtypes(include=['object']).columns.astype(str)
+    st.write('List of categorical columns:\n', categorical_cols)
+    
+    # Dropdown for selecting transform categorical data strategy
+    cat_transform_strategy = st.selectbox("Transform categorical data strategy:", ["None", "Encoding"])
+    
+    # Transform categorical data to numerical data based on user-selected encoding method
+    if cat_transform_strategy != "None":
+        data = transform_categorical_data(data, categorical_cols, max_onehot_categories)
+        
     # Checkbox for saving transformed data
     if st.checkbox("Save Transformed Data"):
         # Generate a download link for the transformed data
