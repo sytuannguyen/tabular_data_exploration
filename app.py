@@ -12,7 +12,10 @@ def load_data(file):
 def fill_missing_values(data, fill_strategy):
     if fill_strategy == "Constant":
         constant_value = st.number_input("Enter constant value to fill missing values", value=0)
-        data_filled = data.fillna(constant_value)
+        numerical_cols = data.select_dtypes(include=['float64', 'int64'])
+        filled_numerical_cols = numerical_cols.fillna(constant_value)
+        data_filled = data.copy()
+        data_filled[numerical_cols.columns] = filled_numerical_cols
     elif fill_strategy == "Mean":
         numerical_cols = data.select_dtypes(include=['float64', 'int64'])
         filled_numerical_cols = numerical_cols.fillna(numerical_cols.mean())
