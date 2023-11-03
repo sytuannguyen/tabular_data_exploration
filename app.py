@@ -63,6 +63,11 @@ def display_dataframe(data):
     st.write(f"#### Dataframe Shape: {data.shape}")
     st.write("#### Number of Missing Values:")
     st.write(data.isnull().sum().sort_values(ascending=False))
+    
+    # Display number of unique values in each column
+    st.write("#### Number of Unique Values in Each Column:")
+    st.write(data.nunique())
+
 
 # Function to display basic statistics
 def display_statistics(data):
