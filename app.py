@@ -135,8 +135,7 @@ def main():
     if fill_strategy != "None":
         data = fill_missing_values(data, fill_strategy)
 
-    # Checkbox for using ordinal encoding or one-hot encoding
-    use_ordinal_encoding = st.checkbox("Use Ordinal Encoding")
+    # Select max number of categories for using one-hot encoding
     max_categories = st.number_input("Max Categories for One-Hot Encoding", min_value=2, max_value=100, value=10, step=1)
 
     # Columns selection for encoding
