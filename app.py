@@ -61,7 +61,7 @@ def main():
         if selected_option == "Display Info":
             #display_info(data)
             st.write("### Dataset Infos")
-            data.info()
+            print(data.info())
         elif selected_option == "Display Head":
             display_head(data)
         elif selected_option == "Display Basic Statistics":
