@@ -42,6 +42,7 @@ def transform_categorical_data(data, categorical_cols, max_onehot_categories=10)
             ordinal_cols.append(col)
     
     if len(one_hot_cols)>0:
+        st.write(one_hot_cols)
         onehot_encoder = OneHotEncoder(sparse=False, drop='first')
         onehot_encoded = onehot_encoder.fit_transform(data[[one_hot_cols]])
         '''onehot_df = pd.DataFrame(onehot_encoded, columns=[f"OH_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
