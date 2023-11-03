@@ -58,7 +58,8 @@ def display_correlation_heatmap(data):
     corr_matrix = selected_data.corr()
     
     # Color customization
-    heatmap_color = st.color_picker("Select heatmap color", value='#00FFAA')
+    heatmap_color = st.selectbox("Select heatmap color palette:", 
+                             ['Accent', 'Blues', 'BrBG', 'BuGn', 'BuPu', 'CMRmap', 'Dark2', 'GnBu', 'Greens', 'Greys', 'OrRd', 'Oranges', 'PRGn', 'PiYG', 'PuBu', 'PuBuGn', 'PuOr', 'PuRd', 'Purples', 'RdBu', 'RdGy', 'RdPu', 'RdYlBu', 'RdYlGn', 'Reds', 'Set1', 'Set2', 'Set3', 'Spectral', 'Wistia', 'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd'])
     
     plt.figure(figsize=(figure_size, figure_size))
     sns.heatmap(corr_matrix, annot=show_annotation, cmap=heatmap_color, fmt=".2f", linewidths=.5)
