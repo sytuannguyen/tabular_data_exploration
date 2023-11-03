@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import OrdinalEncoder, OneHotEncoder
 
 # Function to load CSV file
 def load_data(file):
@@ -27,6 +28,26 @@ def fill_missing_values(data, fill_strategy):
         data_filled = data.copy()
     return data_filled
 
+# Function to transform categorical columns to numerical using ordinal encoding or one-hot encoding
+def transform_categorical_data(data, ordinal_cols, onehot_cols, use_ordinal=True, max_categories=10):
+    transformed_data = data.copy()
+    
+    if use_ordinal:
+        ordinal_encoder = OrdinalEncoder()
+        transformed_data[ordinal_cols] = ordinal_encoder.fit_transform(data[ordinal_cols])
+    else:
+        for col in onehot_cols:
+            if len(data[col].unique()) <= max_categories:
+                onehot_encoder = OneHotEncoder(sparse=False, drop='first')
+                onehot_encoded = onehot_encoder.fit_transform(data[[col]])
+                onehot_df = pd.DataFrame(onehot_encoded, columns=[f"{col}_{int(val)}" for val in onehot_encoder.categories_[0][1:]])
+                transformed_data = pd.concat([transformed_data, onehot_df], axis=1)
+                transformed_data.drop(columns=[col], inplace=True)
+            else:
+                st.warning(f"Column '{col}' has too many categories to use one-hot encoding. Keeping it unchanged.")
+    
+    return transformed_data
+    
 # Function to display the dataset with missing values filled
 def display_dataframe(data):
     st.write("### Show the data")
@@ -117,6 +138,18 @@ def main():
     if fill_strategy != "None":
         data = fill_missing_values(data, fill_strategy)
 
+    # Checkbox for using ordinal encoding or one-hot encoding
+    use_ordinal_encoding = st.checkbox("Use Ordinal Encoding")
+    max_categories = st.number_input("Max Categories for One-Hot Encoding", min_value=2, max_value=100, value=10, step=1)
+
+    # Columns selection for encoding
+    categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
+    selected_ordinal_cols = st.multiselect("Select columns for Ordinal Encoding:", categorical_cols)
+    selected_onehot_cols = st.multiselect("Select columns for One-Hot Encoding:", categorical_cols)
+
+    # Transform categorical data to numerical data based on user-selected encoding method
+    transformed_data = transform_categorical_data(data, selected_ordinal_cols, selected_onehot_cols, use_ordinal_encoding, max_categories)
+
     # Perform the selected action based on the dropdown choice
     if selected_option == "Display Data":
         display_dataframe(data)
@@ -128,6 +161,10 @@ def main():
         display_histogram(data)
     elif selected_option == "Display Cross Plot":
         display_cross_plot(data)
+
+    # Checkbox for saving transformed data
+    if st.checkbox("Save Transformed Data"):
+        transformed_data.to_csv("transformed_data.csv", index=False)
 
 # Run the app
 if __name__ == "__main__":
