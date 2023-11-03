@@ -35,10 +35,6 @@ def fill_missing_values(data, fill_strategy):
 
 # Function to transform categorical columns to numerical using ordinal encoding or one-hot encoding
 def transform_categorical_data(data, categorical_cols, max_onehot_categories=10):
-    # Display number of unique values in each column
-    st.write("#### Number of Unique Values in Each Categorical Column:")
-    st.write(data[categorical_cols].nunique().sort_values(ascending=False))
-
     transformed_data = data.copy()
     ordinal_cols = []
     one_hot_cols = []
@@ -159,6 +155,10 @@ def main():
 
     # Columns selection for encoding
     categorical_cols = data.select_dtypes(include=['object']).columns.astype(str)
+
+    # Display number of unique values in each column
+    st.write("#### Number of Unique Values in Each Categorical Column:")
+    st.write(data[categorical_cols].nunique().sort_values(ascending=False))
     
     # Dropdown for selecting transform categorical data strategy
     cat_transform_strategy = st.selectbox("Transform categorical data strategy:", ["None", "Encoding"])
